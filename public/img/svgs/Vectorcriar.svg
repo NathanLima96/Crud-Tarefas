@@ -1,0 +1,16 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="16" height="16" fill="#E5E5E5"/>
+<g id="cadastro" clip-path="url(#clip0_1892_2)">
+<rect width="1280" height="764" transform="translate(-1031 -27)" fill="white"/>
+<g id="Group 3172">
+<rect id="Rectangle 219" x="-1031" y="-27" width="1280" height="70" fill="black"/>
+<rect id="Rectangle 225" x="-81" y="-2" width="98" height="19" fill="#D9D9D9" fill-opacity="0.01"/>
+<path id="Vector" d="M8 1V15M1 8H15" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_1892_2">
+<rect width="1280" height="764" fill="white" transform="translate(-1031 -27)"/>
+</clipPath>
+</defs>
+</svg>
