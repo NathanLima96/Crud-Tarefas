@@ -10,7 +10,7 @@
       hide-header
       @shown="funcao"
     >
-      <div >
+      <div>
         <div class="container-menu">
           <span
             class="tarefa-data"
@@ -43,7 +43,6 @@
             <div class="container-titulo">
               <img :src="getImagemSrc(tasks.status)" :alt="alt" />
               <p class="tarefa-titulo">{{ tasks.titulo }}</p>
-              <p>{{tasks.id}}</p>
             </div>
             <div class="container-description">
               <p class="tarefa-description">{{ tasks.description }}</p>
@@ -55,32 +54,73 @@
               <img :src="getImagemSrc(tasks.status)" :alt="alt" />
               <p class="sub-titulo">{{ sub.description }}</p>
             </div>
-            <div class="container-btn mt-3 ">
+            <div class="container-btn mt-3">
               <img
-              class="criar"
-              src="/img/svgs/Vectorcriarbranco.svg"
-              alt="Criar tarefa"
+                class="criar"
+                src="/img/svgs/Vectorcriarbranco.svg"
+                alt="Criar tarefa"
               />
-              <button @click="$bvModal.show('sub-modal')" class="btn-criar-tarefa">
-              Criar SubTarefa
-            </button>
-            <submodal :tasks="tasks"/>
+              <button
+                @click="$bvModal.show('sub-modal')"
+                class="btn-criar-tarefa"
+              >
+                Criar SubTarefa
+              </button>
+              <submodal :tasks="tasks" />
             </div>
           </div>
           <div class="menu-lateral">
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-              Obcaecati blanditiis corporis tenetur saepe magni incidunt, dolor
-              aut aliquam, atque inventore, eius explicabo! Tempore pariatur
-              laudantium obcaecati sunt, exercitationem dignissimos
-              consequuntur!
-            </p>
-            <p>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Labore
-              veniam fuga molestias assumenda dignissimos libero expedita
-              tempora possimus magni. Tenetur a exercitationem culpa eum, nulla
-              architecto odit nihil recusandae consequatur!\
-            </p>
+            <div>
+              <p class="titulos-menu-lateral">Criado em</p>
+              <div class="d-flex gap-2">
+                <img
+                  class="imagem-data-menu"
+                  src="/img/svgs/Vectordata.svg"
+                  alt="data"
+                />
+                <p class="valores-menu-lateral">
+                  {{ dateFormatCreated(tasks.created_at) }}
+                </p>
+              </div>
+            </div>
+
+            <div>
+              <div><p class="titulos-menu-lateral">Data de Vencimento</p></div>
+              <div
+                class="valores-menu-lateral d-flex gap-2"
+                :class="{
+                  'data-expirada-menu': isDateExpired(tasks.data_vencimento),
+                  'data-atual-ou-futura-menu': isDateCurrentOrFuture(
+                    tasks.data_vencimento
+                  ),
+                }"
+              >
+                <img
+                  class="imagem-data-menu"
+                  src="/img/svgs/Vectordata.svg"
+                  alt="data"
+                />
+                {{ formatDate(tasks.data_vencimento) }}
+              </div>
+            </div>
+            <div class="mt-3">
+              <p class="titulos-menu-lateral">Modificado em</p>
+
+              <div class="d-flex gap-2">
+                <img
+                  class="imagem-data-menu"
+                  src="/img/svgs/Vectordata.svg"
+                  alt="data"
+                />
+                <p class="valores-menu-lateral">
+                  {{ dateFormatUpdate(tasks.created_at) }}
+                </p>
+              </div>
+            </div>
+            <div>
+              <p class="titulos-menu-lateral">ID da Tarefa</p>
+              <p class="valores-menu-lateral">{{ tasks.id }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -100,10 +140,10 @@ export default {
     };
   },
   props: {
-    tasks: Object
+    tasks: Object,
   },
-  components:{
-  submodal
+  components: {
+    submodal,
   },
   methods: {
     getImagemSrc(status) {
@@ -138,10 +178,16 @@ export default {
       }
       return moment(date).format("DD/MM/YYYY");
     },
+    dateFormatCreated(date) {
+      return moment(date).format("DD/MM/YYYY HH-mm");
+    },
+    dateFormatUpdate(date) {
+      return moment(date).format("DD/MM/YYYY HH-mm");
+    },
 
-  hideModal() {
-    this.$refs["view-modal"].hide();
-  },
+    hideModal() {
+      this.$refs["view-modal"].hide();
+    },
   },
 };
 </script>
@@ -160,14 +206,19 @@ export default {
   margin: auto 0px;
   background: none;
   border: none;
-  
 }
 
 .container-titulo {
   display: flex;
   gap: 17px;
 }
-.tarefa-titulo,
+.tarefa-titulo {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
 .sub-titulo {
   color: #000;
   font-size: 16px;
@@ -200,15 +251,18 @@ export default {
 .menu {
   display: flex;
   gap: 20px;
+  margin: auto 0px;
 }
 
 .points {
   width: 20px;
   height: 10px;
+  cursor: pointer;
 }
 .close {
   width: 20px;
   height: 12px;
+  cursor: pointer;
 }
 
 .tarefa-data {
@@ -250,8 +304,40 @@ export default {
 }
 
 .menu-lateral {
-  max-width: 35%;
+  min-width: 30%;
   background: #f7f7f7;
   padding: 30px;
+  height: 55vh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.titulos-menu-lateral {
+  color: #81858e;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.valores-menu-lateral {
+  color: #000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.imagem-data-menu {
+  width: 13px;
+  height: 14.444px;
+}
+
+.data-atual-ou-futura-menu {
+  color: #009488;
+}
+.data-expirada-menu {
+  color: #d31408;
 }
 </style>

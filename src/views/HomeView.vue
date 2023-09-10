@@ -164,7 +164,7 @@
                   :alt="alt"
                 />
 
-                <p v-if="!previewSub" class="tarefa-description">
+                <p v-if="!previewSub" class="tarefa-sub-titulo">
                   {{ sub.description }}
                 </p>
                 <p v-else>
@@ -513,24 +513,21 @@ input {
   border: none;
 }
 
-.tarefa-titulo,
-.sub-tarefa-titulo {
+.tarefa-titulo,.tarefa-sub-titulo{
   color: #000;
   font-size: 16px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   line-height: normal;
-  margin-bottom: 0px;
 }
 
+
 .tarefa-description {
-  color: #81858e;
+  color: #81858E;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
-  margin-left: 27px;
-  margin-bottom: 0px;
 }
 
 .tarefa-data {
@@ -548,7 +545,7 @@ input {
 .container {
   width: 1280px;
   margin: 20px auto;
-  height: 100vh;
+  max-height: 100vh;
 }
 
 .icone {
