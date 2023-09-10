@@ -12,6 +12,9 @@
   margin: 0px;
   font-family: Montserrat;
 }
+.dropdown-toggle::after {
+   display: none !important;
+}
 
 
 </style>

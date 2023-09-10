@@ -45,7 +45,7 @@
       </div>
       <div class="container-conteudo">
         <div class="container-titulo-conteudo">
-          <h1 class="titulo-entrada">Entrada</h1>
+          <h1 class="titulo-entrada" id="titulo-tarefa">Entrada</h1>
         </div>
         <div class="container-tarefa" v-for="task in tasks" :key="task.id">
           <div class="container-titulo-principal">
@@ -63,7 +63,7 @@
               >
                 <p class="tarefa-titulo">{{ task.titulo }}</p>
               </button>
-              <div v-else>
+              <div  v-else>
                 <input v-model="task.titulo" @blur="editarTarefa2(task)" />
               </div>
             </div>
@@ -156,7 +156,7 @@
               v-for="sub in task.subs"
               :key="sub.id"
             >
-              <div class="d-flex gap-1">
+              <div class="d-flex gap-3 ">
                 <img
                   v-on:click="alterarStatus(task)"
                   v-on:dblclick="reverterStatus(task)"
@@ -385,10 +385,14 @@ export default {
       this.tasks = this.tasks.filter((task) =>
         this.isDateExpired(task.data_vencimento)
       );
+      const tituloTarefaElement = document.getElementById("titulo-tarefa");
+      tituloTarefaElement.textContent = "Tarefas Vencidas";
     },
 
     mostrarTodasTarefas() {
       this.getTarefas();
+      const tituloTarefaElement = document.getElementById("titulo-tarefa");
+      tituloTarefaElement.textContent = "Entrada";
     },
 
     mostrarTarefasDeHoje() {
@@ -396,6 +400,8 @@ export default {
         this.isDateToday(task.data_vencimento)
       );
       this.tasks = tarefasDeHoje;
+      const tituloTarefaElement = document.getElementById("titulo-tarefa");
+      tituloTarefaElement.textContent = "Tarefas Hoje";
     },
   },
 
@@ -455,12 +461,14 @@ input {
 .container-titulo {
   display: flex;
   gap: 17px;
+  
 }
 .container-sub-titulo {
   display: flex;
   gap: 17px;
   padding: 10px;
   justify-content: space-between;
+  
 }
 
 .container-data {
@@ -519,6 +527,7 @@ input {
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  margin-top: 10px;
 }
 
 

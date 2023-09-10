@@ -8,7 +8,6 @@
       id="Modal-Tarefa"
       hide-footer
       hide-header
-      @shown="funcao"
     >
       <div>
         <div class="container-menu">
@@ -29,13 +28,72 @@
             {{ formatDateOrToday(tasks.data_vencimento) }}
           </span>
           <div class="menu">
-            <img class="points" src="/img/svgs/VectorPoints.svg" alt="" />
-            <img
-              @click="hideModal"
-              class="close"
-              src="/img/svgs/VectorClose.svg"
-              alt=""
-            />
+            <div>
+              <b-dropdown
+                size="sm"
+                variant="link"
+                toggle-class="text-decoration-none"
+                no-caret
+              >
+                <template #button-content>
+                  <img class="points" src="/img/svgs/VectorPoints.svg" alt="" />
+                </template>
+                <div class="m-3">
+                  <b-dropdown-item>
+                    <div @click="copiarURL(tasks.id)" class="container-drop">
+                      <img
+                        class="img-drop-menu"
+                        src="/img/svgs/VectorCopiar.svg"
+                        alt=""
+                      />
+                      <p class="drop-menu-title">Copiar link da tarefa</p>
+                    </div>
+                  </b-dropdown-item>
+                  <b-dropdown-item>
+                    <div class="container-drop">
+                      <img
+                        class="img-drop-menu"
+                        src="/img/svgs/VectorDuplicar.svg"
+                        alt=""
+                      />
+                      <p class="drop-menu-title">Duplicar tarefa</p>
+                    </div>
+                  </b-dropdown-item>
+                  <b-dropdown-item>
+                    <div class="container-drop">
+                      <img
+                        class="img-drop-menu"
+                        src="/img/svgs/VectorImprimir.svg"
+                        alt=""
+                      />
+                      <p class="drop-menu-title">Imprimir tarefa</p>
+                    </div>
+                  </b-dropdown-item>
+                  <b-dropdown-item>
+                    <div
+                      @click="excluirTarefa(tasks.id)"
+                      class="container-drop"
+                    >
+                      <img
+                        class="img-drop-excluir"
+                        src="/img/svgs/VectorExcluir.svg"
+                        alt=""
+                      />
+                      <p class="drop-menu-title-excluir">Excluir tarefa</p>
+                    </div>
+                  </b-dropdown-item>
+                </div>
+              </b-dropdown>
+            </div>
+
+            <div>
+              <img
+                @click="hideModal"
+                class="close"
+                src="/img/svgs/VectorClose.svg"
+                alt=""
+              />
+            </div>
           </div>
         </div>
         <div class="container">
@@ -137,6 +195,7 @@ export default {
     return {
       src: "/img/svgs/checkboxnull.svg",
       alt: "checkbox vazio",
+      resultado: "",
     };
   },
   props: {
@@ -146,6 +205,18 @@ export default {
     submodal,
   },
   methods: {
+    async excluirTarefa(taskId) {
+      const excluir = await fetch(`http://localhost:8000/tarefa/${taskId}`, {
+        method: "DELETE",
+      });
+      const res = await excluir.json();
+      window.location.reload();
+    },
+    copiarURL(taskId) {
+      const url = `http://localhost:8000/tarefa/${taskId}`;
+      navigator.clipboard.writeText(url);
+    },
+
     getImagemSrc(status) {
       if (status === "concluida") {
         return "/img/svgs/checkboxgreen.svg";
@@ -246,12 +317,12 @@ export default {
   height: 60px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .menu {
   display: flex;
   gap: 20px;
-  margin: auto 0px;
 }
 
 .points {
@@ -339,5 +410,36 @@ export default {
 }
 .data-expirada-menu {
   color: #d31408;
+}
+.container-drop {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.img-drop-menu {
+  width: 17px;
+  height: 17px;
+}
+.drop-menu-title {
+  color: #000;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 10px auto;
+}
+
+.drop-menu-title-excluir {
+  color: #d31408;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: 10px auto;
+}
+.img-drop-excluir {
+  width: 15px;
+  height: 17px;
 }
 </style>
