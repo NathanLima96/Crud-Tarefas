@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="criar-tarefa">
+    <div class="criar-tarefa d-flex gap-2">
       <img
         class="imagem-criar"
         src="/img/svgs/Vectorcriarbranco.svg"
@@ -105,6 +105,7 @@ export default {
     },
     hideModal() {
       this.$refs["my-modal"].hide();
+      window.location.reload();
     },
     criar() {
       this.preview = true;
@@ -114,6 +115,13 @@ export default {
 </script>
 
 <style scoped>
+.criar-tarefa {
+  display: flex;
+  gap: 10px;
+  border: 1px solid #e5e5e5;
+  min-width: 678px;
+  padding: 20px;
+}
 #data-input {
   width: 200px;
   height: 40px;

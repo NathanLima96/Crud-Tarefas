@@ -2,7 +2,7 @@
   <div class="container">
     <div class="my-custom-navbar">
       <div class="nav-itens">
-        <div class="logo">
+        <div>
           <img class="icone" src="/img/icone.png" alt="icone" />
         </div>
         <div class="itens">
@@ -44,7 +44,7 @@
         </a>
       </div>
       <div class="container-conteudo">
-        <div class="container-titulo-conteudo">
+        <div>
           <h1 class="titulo-entrada" id="titulo-tarefa">Entrada</h1>
         </div>
         <div class="container-tarefa" v-for="task in tasks" :key="task.id">
@@ -63,7 +63,7 @@
               >
                 <p class="tarefa-titulo">{{ task.titulo }}</p>
               </button>
-              <div  v-else>
+              <div v-else>
                 <input v-model="task.titulo" @blur="editarTarefa2(task)" />
               </div>
             </div>
@@ -156,7 +156,7 @@
               v-for="sub in task.subs"
               :key="sub.id"
             >
-              <div class="d-flex gap-3 ">
+              <div class="d-flex gap-3">
                 <img
                   v-on:click="alterarStatus(task)"
                   v-on:dblclick="reverterStatus(task)"
@@ -167,51 +167,6 @@
                 <p v-if="!previewSub" class="tarefa-sub-titulo">
                   {{ sub.description }}
                 </p>
-                <p v-else>
-                  <input
-                    type="text"
-                    class="input-description"
-                    v-model="sub.description"
-                    @blur="editarSubTarefa2(sub)"
-                  />
-                </p>
-              </div>
-              <div>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="107"
-                  height="18"
-                  viewBox="0 0 107 18"
-                  fill="none"
-                >
-                  <path
-                    class="editarData"
-                    d="M57.1111 1V4.2M50.8889 1V4.2M47 7.4H61M48.5556 2.6H59.4444C60.3036 2.6 61 3.31634 61 4.2V15.4C61 16.2837 60.3036 17 59.4444 17H48.5556C47.6964 17 47 16.2837 47 15.4V4.2C47 3.31634 47.6964 2.6 48.5556 2.6Z"
-                    stroke="#81858E"
-                    stroke-width="1.3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    @click="editarSubTarefa()"
-                    @dblclick="editarSubTarefa2()"
-                    class="editar"
-                    d="M13.1038 1.66848C13.3158 1.45654 13.5674 1.28843 13.8443 1.17373C14.1212 1.05903 14.418 1 14.7177 1C15.0174 1 15.3142 1.05903 15.5911 1.17373C15.868 1.28843 16.1196 1.45654 16.3315 1.66848C16.5435 1.88041 16.7116 2.13201 16.8263 2.40891C16.941 2.68582 17 2.9826 17 3.28232C17 3.58204 16.941 3.87882 16.8263 4.15573C16.7116 4.43263 16.5435 4.68423 16.3315 4.89617L5.43807 15.7896L1 17L2.21038 12.5619L13.1038 1.66848Z"
-                    stroke="#81858E"
-                    stroke-width="1.3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    @click="excluirSubTarefa(sub.id)"
-                    class="excluir"
-                    d="M91 4.2H92.6667M92.6667 4.2H106M92.6667 4.2V15.4C92.6667 15.8243 92.8423 16.2313 93.1548 16.5314C93.4674 16.8314 93.8913 17 94.3333 17H102.667C103.109 17 103.533 16.8314 103.845 16.5314C104.158 16.2313 104.333 15.8243 104.333 15.4V4.2M95.1667 4.2V2.6C95.1667 2.17565 95.3423 1.76869 95.6548 1.46863C95.9674 1.16857 96.3913 1 96.8333 1H100.167C100.609 1 101.033 1.16857 101.345 1.46863C101.658 1.76869 101.833 2.17565 101.833 2.6V4.2M96.8333 8.2V13M100.167 8.2V13"
-                    stroke="#81858E"
-                    stroke-width="1.3"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
               </div>
             </div>
           </div>
@@ -238,7 +193,6 @@ export default {
       alt: "checkbox vazio",
       preview: false,
       previewData: false,
-      previewSub: false,
       tarefa: {},
     };
   },
@@ -266,13 +220,6 @@ export default {
       const res = await excluir.json();
       window.location.reload();
     },
-    async excluirSubTarefa(subId) {
-      const excluir = await fetch(`http://localhost:8000/subtarefa/${subId}`, {
-        method: "DELETE",
-      });
-      const res = await excluir.json();
-      window.location.reload();
-    },
 
     editarTarefa() {
       this.preview = true;
@@ -290,22 +237,6 @@ export default {
         }),
       });
       this.preview = false;
-    },
-    editarSubTarefa() {
-      this.previewSub = true;
-    },
-
-    async editarSubTarefa2(sub) {
-      const editar = await fetch(`http://localhost:8000/subtarefa/${sub.id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          description: sub.description,
-        }),
-      });
-      this.previewSub = false;
     },
 
     editarData() {
@@ -386,7 +317,7 @@ export default {
         this.isDateExpired(task.data_vencimento)
       );
       const tituloTarefaElement = document.getElementById("titulo-tarefa");
-      tituloTarefaElement.textContent = "Tarefas Vencidas";
+      tituloTarefaElement.textContent = "Vencidos";
     },
 
     mostrarTodasTarefas() {
@@ -412,189 +343,14 @@ export default {
 </script>
 
 <style scoped>
-input {
-  border: solid 1px #81858e;
-}
-.input-description {
-  width: 300px;
-}
-
-.excluir,
-.editar,
-.editarData {
-  cursor: pointer;
-}
-
-#data-input {
-  width: 130px;
-  height: 30px;
-  text-align: center;
-}
-
-.data-expirada {
-  background: rgba(211, 20, 8, 0.1);
-  color: #d31408;
-}
-.data-atual-ou-futura {
-  background: rgba(0, 148, 136, 0.1);
-  color: #009488;
-}
-.container-conteudo {
-  margin: 50px auto;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.btn-criar-tarefa {
-  color: #81858e;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  margin: auto 0px;
-  background: none;
-  border: none;
-  display: none;
-}
-
-.container-titulo {
-  display: flex;
-  gap: 17px;
-  
-}
-.container-sub-titulo {
-  display: flex;
-  gap: 17px;
-  padding: 10px;
-  justify-content: space-between;
-  
-}
-
-.container-data {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.titulo-entrada {
-  color: #000;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 800;
-  line-height: normal;
-}
-
-.container-tarefa {
-  border: 1px solid #e5e5e5;
-  width: 678px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.container-tarefa:hover .container-group {
-  display: flex;
-  justify-content: end;
-}
-.container-group {
-  display: none;
-  position: relative;
-  top: -70px;
-  margin-right: 30px;
-}
-
-.container-sub-tarefa {
-  border: 1px solid #e5e5e5;
-  padding: 20px;
-}
-
-.container-titulo-principal {
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-}
-
-.tarefa-button {
-  background: none;
-  border: none;
-}
-
-.tarefa-titulo,.tarefa-sub-titulo{
-  color: #000;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  margin-top: 10px;
-}
-
-
-.tarefa-description {
-  color: #81858E;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
-.tarefa-data {
-  width: 116px;
-  height: 25px;
-  text-align: center;
-  margin-left: 27px;
-}
-
-.imagem-data {
-  width: 13px;
-  height: 14.444px;
-}
-
 .container {
   width: 1280px;
   margin: 20px auto;
   max-height: 100vh;
 }
 
-.icone {
-  width: 28px;
-  height: 28px;
-}
+/*Inicio Nav-bar */
 
-.criar {
-  width: 14px;
-  height: 14px;
-  display: flex;
-}
-
-.container-btn {
-  display: flex;
-  gap: 10px;
-}
-
-.container-btn:hover .btn-criar-tarefa {
-  display: flex;
-  color: #fff;
-  font-size: 15px;
-  font-style: normal;
-  font-weight: 600;
-}
-
-.interrogacao {
-  width: 20px;
-  height: 20px;
-}
-
-.sininho {
-  width: 18px;
-  height: 19.996px;
-}
-
-.perfil {
-  width: 30px;
-  height: 30px;
-}
 .my-custom-navbar {
   background: #000;
   width: 1280px;
@@ -607,18 +363,65 @@ input {
   margin: 18px 15px 0px 15px;
 }
 
+.icone {
+  width: 28px;
+  height: 28px;
+}
 .itens {
   display: flex;
   gap: 45px;
   align-items: center;
 }
+.criar {
+  width: 14px;
+  height: 14px;
+  display: flex;
+}
 
+.container-btn {
+  display: flex;
+  gap: 10px;
+}
+.btn-criar-tarefa {
+  color: #81858e;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin: auto 0px;
+  background: none;
+  border: none;
+  display: none;
+}
+
+.container-btn:hover .btn-criar-tarefa {
+  display: flex;
+  color: #fff;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 600;
+}
+.interrogacao {
+  width: 20px;
+  height: 20px;
+}
+
+.sininho {
+  width: 18px;
+  height: 19.996px;
+}
+.perfil {
+  width: 30px;
+  height: 30px;
+}
+
+/*Fim Nav-bar */
+/*Inicio container-main */
 .container-main {
   display: flex;
   width: 1280px;
   margin: 0px auto;
 }
-
 .container-menu {
   background: #fafafa;
   width: 350px;
@@ -641,5 +444,129 @@ input {
 
 .container-menu a img {
   padding-right: 20px;
+}
+.container-conteudo {
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.titulo-entrada {
+  color: #000;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+}
+.container-tarefa {
+  border: 1px solid #e5e5e5;
+  width: 678px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.container-group {
+  display: none;
+  position: relative;
+  top: -70px;
+  margin-right: 30px;
+}
+
+.container-tarefa:hover .container-group {
+  display: flex;
+  justify-content: end;
+}
+
+.container-titulo-principal {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.container-titulo {
+  display: flex;
+  gap: 17px;
+}
+.tarefa-button {
+  background: none;
+  border: none;
+}
+
+.tarefa-titulo,
+.tarefa-sub-titulo {
+  color: #000;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin-top: 2px;
+  margin-bottom: 0px;
+}
+
+.container-data {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tarefa-description {
+  color: #81858e;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-left: 27px;
+  margin-bottom: 0px;
+}
+.input-description {
+  width: 300px;
+}
+.tarefa-data {
+  width: 116px;
+  height: 25px;
+  text-align: center;
+  margin-left: 27px;
+  margin-bottom: 0px;
+}
+.imagem-data {
+  width: 13px;
+  height: 14.444px;
+}
+#data-input {
+  width: 130px;
+  height: 30px;
+  text-align: center;
+}
+/*Fim container-main */
+
+input {
+  border: solid 1px #81858e;
+}
+
+.excluir,
+.editar,
+.editarData {
+  cursor: pointer;
+}
+
+.data-expirada {
+  background: rgba(211, 20, 8, 0.1);
+  color: #d31408;
+}
+.data-atual-ou-futura {
+  background: rgba(0, 148, 136, 0.1);
+  color: #009488;
+}
+
+.container-sub-titulo {
+  display: flex;
+  gap: 17px;
+  padding: 10px;
+  justify-content: space-between;
+}
+
+.container-sub-tarefa {
+  border: 1px solid #e5e5e5;
+  padding: 15px;
 }
 </style>

@@ -74,6 +74,7 @@ export default {
     },
     hideModal() {
       this.$refs["sub-modal"].hide();
+      window.location.reload();
     },
     criar() {
       this.preview = true;
