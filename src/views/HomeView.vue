@@ -218,6 +218,7 @@ export default {
         method: "DELETE",
       });
       const res = await excluir.json();
+
       window.location.reload();
     },
 
@@ -540,7 +541,8 @@ export default {
 /*Fim container-main */
 
 input {
-  border: solid 1px #81858e;
+  border: 1px solid rgba(229, 229, 229, 0.93);
+  padding: 5px;
 }
 
 .excluir,
